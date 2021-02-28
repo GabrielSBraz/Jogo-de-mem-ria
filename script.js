@@ -14,13 +14,15 @@ const yellow = document.querySelector(".yellow");
 
 //Cria ordem aleatória de cores
 let shuffOrder = () => {
-    let colorOrder = Math.floor(Math.random() = 4);
+    let colorOrder = Math.floor(Math.random() * 4);
+    console.log(colorOrder);
     order[order.length] = colorOrder;
+    console.log(order);
     clickedOrder = [];
 
     for(let i in order) {
         let elementColor = createColorElement(order[i]);
-            lightColor(elementColor, Number[i] + 1);
+        lightColor(elementColor, Number(i) + 1);
     }
 }
 
@@ -29,7 +31,7 @@ let lightColor = (element, number) => {
     number = number * 500;
     setTimeout(() => {
         element.classList.add("selected");
-    }, number = 250);
+    }, number - 250);
     setTimeout(() => {
         element.classList.remove("selected");
     });
@@ -39,7 +41,7 @@ let lightColor = (element, number) => {
 let checkOrder = () => {
     for(let i in clickedOrder) {
         if(clickedOrder[i] != order[i]) {
-            lose();
+            gameOver();
             break;
         }
     }
@@ -56,7 +58,51 @@ let click = (color) => {
 
     setTimeout(() => {
         createColorElement(color).classList.remove("selected");
-    })
-
-    checkOrder();
+        checkOrder();
+    });
 }
+
+//Função que retorna a cor
+let createColorElement = (color) => {
+    if(color == 0) {
+        return green;
+    }else if(color == 1) {
+        return red;
+    }else if(color == 2) {
+        return yellow;
+    }else if(color == 3) {
+        return blue;
+    }
+}
+
+//Função para próximo nível do jogo
+let nextLevel = () => {
+    score++;
+    shuffOrder();
+}
+
+//função para Game Over
+let gameOver = () => {
+    alert(`Pontuação: ${score}!\nVocê perdeu o jogo!\nClique em OK para iniciar um novo jogo`);
+    order = [];
+    clickedOrder = [];
+
+    playGame();
+}
+
+//Função de início do jogo
+let playGame = () => {
+    alert(`Bem-vindo ao Genius, iniciando um novo jogo!`)
+    score = 0;
+
+    nextLevel();
+}
+
+//Eventos de click para as cores
+green.onclick = () => click(0);
+red.onclick = () => click(1);
+yellow.onclick = () => click(2);
+blue.onclick = () => click(3);
+
+//início do jogo
+playGame();
